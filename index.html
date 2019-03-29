@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Math Practice</title>
+</head>
+	<style>
+		#input
+		{
+			width: 40px;
+		}
+		table
+		{
+			table-layout: fixed;
+			margin: auto;
+		}
+	</style>
+<body>
+	<table>
+		<tr>
+			<th><button onClick="startGame(); this.disabled = true">Start</button></th>
+			<th id="head">See how many you can get correct in 60 seconds!</th>
+			
+		</tr>
+		<tr>
+			<td></td>
+			<th><h1 id="question">1 + 1 = </h1><input type="text" id="input" value="2"></th>
+		</tr>
+	</table>
+</body>
+	<script>
+		var currentAnswer = 0;
+		var correct = 0;
+		function startGame()
+		{
+			
+			newQuestion();
+			document.getElementById('input').value = "";
+			var timeleft = 59;
+			
+			var countDown = setInterval(function(){
+			  document.getElementById("head").innerHTML = timeleft-1 + " seconds remaining";
+			  timeleft--;
+				
+			  if(timeleft <= 0){
+				clearInterval(countDown);
+				gameOver();
+			  }
+				console.log(timeleft);
+			}, 1000);
+		}
+		
+		function gameOver() {
+			alert("You finished with " + correct + " correct");
+			location.reload();
+		}
+		
+		window.onkeydown = function(e) {
+			if(e.keyCode == 13)
+				{
+					checkAnswer();
+				}
+		}
+		
+		function checkAnswer() {
+			var userAns = document.getElementById("input").value;
+			if(userAns == currentAnswer)
+				{
+					correct++;
+					document.getElementById("input").value = "";
+					newQuestion();
+					
+					document.getElementById("input").style.backgroundColor = "green";
+					var resColor = setTimeout(function(){
+						document.getElementById("input").style.backgroundColor = "white";
+					},100);
+				}
+			else					
+				document.getElementById("input").style.backgroundColor = "red";
+				var resColor = setTimeout(function(){
+						document.getElementById("input").style.backgroundColor = "white";
+					},100);
+		}
+		
+		function newQuestion() {
+			var op = Math.floor(Math.random() * 4);
+			if(op == 0) {//+
+					let n1 = Math.floor(Math.random() * 13);
+					let n2 = Math.floor(Math.random() * 13);
+					currentAnswer = n1 + n2;
+					var ques = n1 + " + " + n2 + " = ";
+					console.log(ques);
+					document.getElementById("question").innerHTML = ques;
+				}
+			else if(op == 1) {//-
+					let n1 = Math.floor(Math.random() * 12) + 1;
+					let n2 = Math.floor(Math.random() * 12) + 1;
+					while(n1 < n2) {
+							n1 = Math.floor(Math.random() * 12) + 1;
+							n2 = Math.floor(Math.random() * 12) + 1;
+						}
+					currentAnswer = n1 - n2;
+					var ques = n1 + " - " + n2 + " = ";
+					console.log(ques);
+					document.getElementById("question").innerHTML = ques;
+				}
+			else if(op == 2) {//x
+					let n1 = Math.floor(Math.random() * 12) + 1;
+					let n2 = Math.floor(Math.random() * 12) + 1;
+					currentAnswer = n1 *  n2;
+					var ques = n1 + " x " + n2 + " = ";
+					console.log(ques);
+					document.getElementById("question").innerHTML = ques;
+				}
+			else if(op == 3) {// /
+					let n1 = Math.floor(Math.random() * 12) + 1;
+					let n2 = Math.floor(Math.random() * 12) + 1;
+					while(n1 % n2 != 0) {
+							n1 = Math.floor(Math.random() * 12) + 1;
+							n2 = Math.floor(Math.random() * 12) + 1;
+						}
+					currentAnswer = n1 / n2;
+					var ques = n1 + " / " + n2 + " = ";
+					console.log(ques);
+					document.getElementById("question").innerHTML = ques;
+				}
+		}
+	</script>
+</html>
